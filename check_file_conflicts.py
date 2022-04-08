@@ -1,31 +1,46 @@
 #!/usr/bin/python3
-
 import sys
 import os
 import tarfile
 
-if (len(sys.argv) != 3):
-    print("This script needs two arguments: Two .lfpkg files!")
+from os import listdir
+
+if (len(sys.argv) != 2):
+    print("This script needs an argument: Package directory")
     exit(-1)
 
-file1 = sys.argv[1]
-file2 = sys.argv[2]
+srcDir = str(sys.argv[1])
+cacheDir = srcDir + "/cache/"
 
-#Check if the first file is a leaf package
-split = file1.split('.')
-if (split[len(split)-1] != "lfpkg"):
-    print("The first file is not a .lfpkg file!")
-    exit(1)
+if (os.path.isdir(cacheDir)):
+    print("Using existing cache directory", cacheDir)
+else:
+    print("Creating cache directory", cacheDir)
+    os.mkdir(cacheDir)
 
-#Check if the second file is a leaf package
-split = file2.split('.')
-if (split[len(split)-1] != "lfpkg"):
-    print("The second file is not a .lfpkg file!")
-    exit(1)
+packages = []
 
-print("Checking for file conflicts between", sys.argv[1], "and", sys.argv[2])
+for root, dirs, files in os.walk(srcDir):
+    for file in files:
+        #Split the filename to get the file extension
+        split = file.split('.')
+        fType = split[len(split)-1]
 
-os.mkdir("compare")
+        #If the extension indicates a leaf package, add it
+        if (fType == "lfpkg"):
+            packages.append(os.path.join(root, file))
 
-pkg1 = tarfile.open(file1, 'r')
-pkg2 = tarfile.open(file2, 'r')
+for name in packages:
+    print("Found package: " + name)
+
+for path in packages:
+    print("Extracting", path + "...")
+
+    pkg = tarfile.open(path)
+    try:
+        pkg.extractall(path=cacheDir)
+    except:
+        print("Failed to extract", path)
+
+    pkg.close()
+
