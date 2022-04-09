@@ -6,12 +6,12 @@ from tools.find_in import *
 from tools.extract_packages import *
 from tools.leafPackage.leafPackage import LeafPackage
 
-if (len(sys.argv) != 2):
-    print("This script needs an argument: Package directory")
+if (len(sys.argv) != 3):
+    print("This script needs two arguments: <source directory> <cache directory>")
     exit(-1)
 
 srcDir = str(sys.argv[1])
-cacheDir = srcDir + "/cache/"
+cacheDir = str(sys.argv[2])
 
 tar_packages = find_in(srcDir, "lfpkg")
 
