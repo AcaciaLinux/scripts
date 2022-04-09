@@ -34,7 +34,7 @@ for src_package in packages:
     print("Checking for file conflicts with", src_package._name)
 
     for check_package in packages:
-        if (src_package != check_package):
+        if (src_package._name != check_package._name):
 
             conflicts = src_package.checkConflicts(check_package)
 
