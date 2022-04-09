@@ -30,6 +30,8 @@ total_conflicts = 0
 
 file_report = open("report.txt", "w")
 
+packages_with_conflicts = []
+
 for src_package in packages:
     print("Checking for file conflicts with", src_package._name)
 
@@ -42,14 +44,20 @@ for src_package in packages:
                 print("Found {} conflicts between {} and {}".format(len(conflicts), src_package._name, check_package._name))
 
                 total_conflicts += len(conflicts)
+                packages_with_conflicts.append(src_package)
 
                 file_report.write("\n{} <=> {} ==> {} conflicts:\n".format(src_package._name, check_package._name, len(conflicts)))
 
                 for file in conflicts:
                     file_report.write("\t{}\n".format(file))
 
-file_report.write("\nTotal conflicts: {}".format(total_conflicts))
+file_report.write("=> Packages with conflicts:\n")
+
+for package in packages_with_conflicts:
+    file_report.write("\t==> {}\n".format(package._name))
+
+file_report.write("\nTotal conflicts: {}\n".format(total_conflicts))
 
 file_report.close()
 
-print("Total conflicts found: {}".format(total_conflicts))
+print("Total conflicts found: {}\n".format(total_conflicts))
