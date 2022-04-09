@@ -2,6 +2,7 @@ import tarfile
 import os
 from traceback import print_stack
 from .check_package_archive import *
+from .pkg_archive.name import *
 
 def extract_packages(src_pkgs, destination):
 
@@ -10,6 +11,8 @@ def extract_packages(src_pkgs, destination):
 		print("Using existing destination", destination)
 	else:
 		print("Creating destination", destination + "...")
+
+	packages = []
 
 	#Walk through every package package archive
 	for src_pkg in src_pkgs:
@@ -32,9 +35,13 @@ def extract_packages(src_pkgs, destination):
 			print("Failed to extract package", src_pkg)
 			print_stack()
 			pkg.close()
+			continue
 
 		#Check its contents
 		if (check_package_archive(src_pkg, destination) != True):
 			print("Checks for package", src_pkg, "failed!")
+			continue
+		
+		packages.append(getFullName(src_pkg))
 
-
+	return packages

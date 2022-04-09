@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import sys
+import branch.src.lfpkg as lfpkg
 
 from tools.find_in import *
 from tools.extract_packages import *
@@ -13,4 +14,13 @@ cacheDir = srcDir + "/cache/"
 
 tar_packages = find_in(srcDir, "lfpkg")
 
-extract_packages(tar_packages, cacheDir)
+package_names = extract_packages(tar_packages, cacheDir)
+
+packages = []
+
+for pkg_name in package_names:
+    print("Parsing package", pkg_name + "...")
+    newPack = lfpkg.parse(cacheDir + "/" + pkg_name + "/leaf.pkg")
+    packages.append(newPack)
+
+
