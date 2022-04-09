@@ -2,7 +2,9 @@
 This is a collection of scripts that help manage [AcaciaLinux](https://github.com/AcaciaLinux) resources.
 
 You may clone this repository using the following command:
-```git clone --recursive https://github.com/AcaciaLinux/scripts```
+```bash
+git clone --recursive https://github.com/AcaciaLinux/scripts
+```
 The `--recursive` is needed because this repository uses some convenient parts of [branch](https://github.com/AcaciaLinux/branch), so this addition is needed to make git clone [branch](https://github.com/AcaciaLinux/branch) into this repository too.
 
 ## check_file_conflicts.py
