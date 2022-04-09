@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+from modulefinder import packagePathMap
 import sys
 import branch.src.lfpkg as lfpkg
 
@@ -44,7 +45,9 @@ for src_package in packages:
                 print("Found {} conflicts between {} and {}".format(len(conflicts), src_package._name, check_package._name))
 
                 total_conflicts += len(conflicts)
-                packages_with_conflicts.append(src_package)
+
+                if (packages_with_conflicts.count(src_package) == 0):
+                    packages_with_conflicts.append(src_package)
 
                 file_report.write("\n{} <=> {} ==> {} conflicts:\n".format(src_package._name, check_package._name, len(conflicts)))
 
@@ -60,4 +63,4 @@ file_report.write("\nTotal conflicts: {}\n".format(total_conflicts))
 
 file_report.close()
 
-print("Total conflicts found: {}\n".format(total_conflicts))
+print("Total conflicts found: {}".format(total_conflicts))
