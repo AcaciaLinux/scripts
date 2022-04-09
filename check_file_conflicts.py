@@ -48,6 +48,8 @@ for src_package in packages:
                 for file in conflicts:
                     file_report.write("\t{}\n".format(file))
 
+file_report.write("\nTotal conflicts: {}".format(total_conflicts))
+
 file_report.close()
 
-
+print("Total conflicts found: {}".format(total_conflicts))
