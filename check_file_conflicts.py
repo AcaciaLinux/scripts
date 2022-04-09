@@ -17,12 +17,37 @@ tar_packages = find_in(srcDir, "lfpkg")
 
 package_names = extract_packages(tar_packages, cacheDir)
 
-packages: LeafPackage = []
+packages = []
 
 for pkg_name in package_names:
     print("Parsing package", pkg_name + "...")
-    newPack = LeafPackage(cacheDir + "/" + pkg_name, lfpkg.parse(cacheDir + "/" + pkg_name + "/leaf.pkg"))
-    packages.append(newPack)
+    packages.append(LeafPackage(cacheDir + "/" + pkg_name, lfpkg.parse(cacheDir + "/" + pkg_name + "/leaf.pkg")))
 
 for package in packages:
     package.index()
+
+total_conflicts = 0
+
+file_report = open("report.txt", "w")
+
+for src_package in packages:
+    print("Checking for file conflicts with", src_package._name)
+
+    for check_package in packages:
+        if (src_package != check_package):
+
+            conflicts = src_package.checkConflicts(check_package)
+
+            if (len(conflicts) > 0):
+                print("Found {} conflicts between {} and {}".format(len(conflicts), src_package._name, check_package._name))
+
+                total_conflicts += len(conflicts)
+
+                file_report.write("\n{} <=> {} ==> {} conflicts:\n".format(src_package._name, check_package._name, len(conflicts)))
+
+                for file in conflicts:
+                    file_report.write("\t{}\n".format(file))
+
+file_report.close()
+
+

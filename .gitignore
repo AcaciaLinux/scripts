@@ -2,3 +2,4 @@ test/
 compare/
 
 *__pycache__*
+report.txt
