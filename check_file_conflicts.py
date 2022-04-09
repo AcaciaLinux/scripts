@@ -54,7 +54,7 @@ for src_package in packages:
                 for file in conflicts:
                     file_report.write("\t{}\n".format(file))
 
-file_report.write("=> Packages with conflicts:\n")
+file_report.write("\n=> Packages with conflicts:\n")
 
 for package in packages_with_conflicts:
     file_report.write("\t==> {}\n".format(package._name))
