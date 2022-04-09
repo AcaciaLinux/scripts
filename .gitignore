@@ -1,3 +1,4 @@
 test/
 compare/
 
+*__pycache__*
