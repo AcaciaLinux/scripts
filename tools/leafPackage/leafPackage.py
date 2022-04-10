@@ -42,7 +42,7 @@ class LeafPackage():
 	def tar(self, targetFile: str):
 		print("Taring {} to {}...".format(self.getFullName(), targetFile))
 
-		tar_file = tarfile.open(targetFile, "w:gz")
+		tar_file = tarfile.open(targetFile, "w:xz")
 
 		for root, dirs, files in os.walk(self._pkgRoot):
 			for file in files:
