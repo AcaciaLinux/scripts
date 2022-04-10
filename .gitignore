@@ -1,5 +1,6 @@
 test/
 compare/
+.cache/
 
 *__pycache__*
 report.txt

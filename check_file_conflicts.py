@@ -14,7 +14,7 @@ if (len(sys.argv) != 3):
 srcDir = str(sys.argv[1])
 cacheDir = str(sys.argv[2])
 
-tar_packages = find_in(srcDir, "lfpkg")
+tar_packages = find_in_ext(srcDir, "lfpkg")
 
 package_names = extract_packages(tar_packages, cacheDir)
 

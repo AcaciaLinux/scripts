@@ -1,6 +1,6 @@
 
 from branch.src.lfpkg import *
-from ..find_in import find_in
+from ..find_in import find_in_ext
 
 class LeafPackage():
 	#_files = []
@@ -22,7 +22,7 @@ class LeafPackage():
 
 	def index(self):
 
-		foundFiles = find_in(self._pkgRoot + "/data")
+		foundFiles = find_in_ext(self._pkgRoot + "/data")
 
 		for file in foundFiles:
 			self._files.append(file.replace(self._pkgRoot + "/data", ""))
