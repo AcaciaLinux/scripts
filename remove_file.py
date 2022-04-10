@@ -39,6 +39,8 @@ for path in packages_paths:
 packages = []
 lfpkg_files = find_in(cacheDir, "leaf.pkg")
 
+removed_files = []
+
 #Index the packages
 print("Parsing:")
 for lfpkg_file in lfpkg_files:
@@ -59,6 +61,7 @@ for package in packages:
 		if (not os.path.isdir(checkPath)):
 			os.remove(checkPath)
 			print("\tFound and removed {}".format(file_remove))
+			removed_files.append(package.getFullName() + " => " + file_remove)
 
 print("Repackaging:")
 for package in packages:
@@ -68,3 +71,13 @@ for package in packages:
 	tarDir = str(package._pkgRoot).replace(package.getFullName(), "")
 
 	package.tar(tarDir + "/" + package.getFullName() + ".lfpkg")
+
+print("\nFiles removed:")
+for file in removed_files:
+	print("\t=> {}".format(file))
+
+file_report = open("report_remove_file.txt", "w")
+file_report.write("\nFiles removed:\n")
+for file in removed_files:
+	file_report.write("\t=> {}\n".format(file))
+file_report.close()

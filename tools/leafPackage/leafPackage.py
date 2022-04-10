@@ -49,3 +49,4 @@ class LeafPackage():
 				print("Adding to tarfile: {}".format(os.path.join(root, file)))
 				tar_file.add(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(self._pkgRoot, '..')))
 
+		tar_file.close()

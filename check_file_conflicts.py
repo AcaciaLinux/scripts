@@ -29,7 +29,7 @@ for package in packages:
 
 total_conflicts = 0
 
-file_report = open("report.txt", "w")
+file_report = open("report_check_file_conflicts.txt", "w")
 
 packages_with_conflicts = []
 
