@@ -19,7 +19,7 @@ if (not os.path.isdir(cacheDir)):
 
 srcDir = sys.argv[1]
 file_remove = sys.argv[2]
-packages_paths = find_in_relative(srcDir, "lfpkg")
+packages_paths = find_in_ext_relative(srcDir, "lfpkg")
 relative_dirs = []
 
 #Extract the packages

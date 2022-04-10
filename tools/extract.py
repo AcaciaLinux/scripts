@@ -2,8 +2,6 @@ import tarfile
 from .check_package_archive import check_package_archive
 
 def extract(path: str, destination: str):
-	print("Extracting {} into {}...".format(path, destination))
-
 	#Try opening the package
 	try:
 		pkg = tarfile.open(path)
