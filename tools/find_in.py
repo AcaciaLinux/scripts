@@ -1,5 +1,21 @@
 import os
 
+#Finds all the file name occurencies in the dir
+def find_in(dir, fileName):
+	results = []
+
+	for root, dirs, files in os.walk(dir):
+		for file in files:
+			#Split the filename to get the file extension
+			split = file.split('/')
+			fName = split[len(split)-1]
+
+			#If the filename is the desired name, get it
+			if (fName == fileName):
+				results.append(os.path.join(root, file))
+
+	return results
+
 #Finds all the files in dir with the extension
 def find_in_ext(dir, extension = ""):
 	results = []

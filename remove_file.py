@@ -6,6 +6,8 @@ import os
 
 from tools.find_in import *
 from tools.extract import extract
+from tools.leafPackage.leafPackage import LeafPackage
+import branch.src.lfpkg as lfpkg
 
 if (len(sys.argv) < 3):
 	print("Please specify at least the path to search and one file to remove!")
@@ -20,7 +22,6 @@ if (not os.path.isdir(cacheDir)):
 srcDir = sys.argv[1]
 file_remove = sys.argv[2]
 packages_paths = find_in_ext_relative(srcDir, "lfpkg")
-relative_dirs = []
 
 #Extract the packages
 print("Extracting:")
@@ -34,21 +35,36 @@ for path in packages_paths:
 	#Extract the package
 	extract(srcDir + path, cacheDir + "/" + extractDir)
 
-#for path in packages_paths:
-#	cache = str(path).replace(srcDir, "")
-#	#Don't look at this, just some magic....
-#	cache = cache.replace(cache.split('/')[len(cache.split('/'))-1], "")
-#	relative_dirs.append(cache)
-#	print("Relative path of {}: {}".format(path, cache))
 
-#print("Found packages:")
-#for path in packages_paths:
-#	print("=> {}".format(path))
-#	extract(path, cacheDir + "/" + relative_dirs[packages_paths.index(path)])
+packages = []
+lfpkg_files = find_in(cacheDir, "leaf.pkg")
 
-#for path in relative_dirs:
-#	checkPath = cacheDir + "/" + path + "/data/" + file_remove
-#	print("Checking if {} exists...".format(checkPath))
-#	
-#	if (os.path.exists(checkPath)):
-#		print("File " + file_remove + " exists!")
+#Index the packages
+print("Parsing:")
+for lfpkg_file in lfpkg_files:
+	print("=> {}".format(lfpkg_file))
+
+	split = lfpkg_file.split('/')
+	pkgRoot = lfpkg_file.replace(split[len(split)-1], "")
+
+	packages.append(LeafPackage(pkgRoot, lfpkg.parse(lfpkg_file)))
+
+print("Checking:")
+for package in packages:
+	print("=> {}".format(package.getFullName()))
+
+	checkPath = package._pkgRoot + "/data/" + file_remove
+	
+	if (os.path.exists(checkPath)):
+		if (not os.path.isdir(checkPath)):
+			os.remove(checkPath)
+			print("\tFound and removed {}".format(file_remove))
+
+print("Repackaging:")
+for package in packages:
+	print("=> {}".format(package.getFullName()))
+
+	#Create the extracting directory path
+	tarDir = str(package._pkgRoot).replace(package.getFullName(), "")
+
+	package.tar(tarDir + "/" + package.getFullName() + ".lfpkg")

@@ -1,3 +1,4 @@
+import tarfile
 
 from branch.src.lfpkg import *
 from ..find_in import find_in_ext
@@ -20,6 +21,9 @@ class LeafPackage():
 		self._dependencies = lfpkg_file.dependencies
 		self._files = []
 
+	def getFullName(self):
+		return str(self._name + "-" + self._version)
+
 	def index(self):
 
 		foundFiles = find_in_ext(self._pkgRoot + "/data")
@@ -34,3 +38,14 @@ class LeafPackage():
 
 	def checkConflicts(self, otherPkg):
 		return list(set(self._files) & set(otherPkg._files))
+
+	def tar(self, targetFile: str):
+		print("Taring {} to {}...".format(self.getFullName(), targetFile))
+
+		tar_file = tarfile.open(targetFile, "w:gz")
+
+		for root, dirs, files in os.walk(self._pkgRoot):
+			for file in files:
+				print("Adding to tarfile: {}".format(os.path.join(root, file)))
+				tar_file.add(os.path.join(root, file), os.path.relpath(os.path.join(root, file), os.path.join(self._pkgRoot, '..')))
+
