@@ -19,6 +19,7 @@ for div in soup.findAll("div", id="pkgdeps"):
         if (len(li) == 3):
             for entry in li.findAll("a"):
                 deps.append(entry.text)
+                makedeps.append(entry.text)
      
         else:
             if (len(li.findAll("span", {'class':'make-dep'})) != 0):
