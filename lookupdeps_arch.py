@@ -4,14 +4,23 @@ from bs4 import BeautifulSoup
 import requests
 import sys
 
-if (len(sys.argv) != 2):
-    print("Usage: {} <package>".format(sys.argv[0]))
+if (len(sys.argv) < 2):
+    print("Usage: {} <package> (optional)<repo>".format(sys.argv[0]))
     exit(1)
+    
+repo = "core"
+if (len(sys.argv) >= 3):
+    repo = sys.argv[2]
 
-url="https://archlinux.org/packages/core/x86_64/{}".format(sys.argv[1])
+url="https://archlinux.org/packages/{}/x86_64/{}".format(repo, sys.argv[1])
 deps = []
 makedeps = []
 req = requests.get(url)
+
+if (req.status_code != 200):
+    print("Error in fetching data: {}".format(req.status_code))
+    exit(1)
+
 soup = BeautifulSoup(req.text, "html.parser")
 for div in soup.findAll("div", id="pkgdeps"):
     lis = div.findAll("li")
