@@ -1,6 +1,5 @@
 import tarfile
-
-from branch.src.lfpkg import *
+from .lfpkg import *
 from ..find_in import find_in_ext
 
 class LeafPackage():
