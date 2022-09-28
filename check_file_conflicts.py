@@ -17,6 +17,7 @@ cacheDir = str(sys.argv[2])
 tar_packages = find_in_ext(srcDir, "lfpkg")
 
 package_names = extract_packages(tar_packages, cacheDir)
+print("Done extracting")
 
 packages = []
 
