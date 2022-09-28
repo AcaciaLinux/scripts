@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 from modulefinder import packagePathMap
 import sys
-from tools.leafPackage.lfpkg import lfpkg
+from tools.leafPackage import lfpkg
 
 from tools.find_in import *
 from tools.extract_packages import *
