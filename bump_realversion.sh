@@ -1,13 +1,23 @@
 #!/bin/sh
 
 #Check for the required argument
-if [ $# -eq 0 ]
+if [ $# -ne 1 ]
 then
-	echo "This script needs the .bpb file to increment the realversion of"
+	echo "Usage: $0 <.bpb file / parent dir of package.bpb>"
 	exit -1
 fi
 
-FILE=$1
+if [ -d $1 ]
+then
+	FILE=$1/package.bpb
+	if ! [ -f $FILE ]
+	then
+		echo "$FILE does not exist!"
+		exit -1
+	fi
+else
+	FILE=$1
+fi
 
 #Extract package name
 PKGNAME=$(cat $FILE | grep "name=" | cut -d'=' -f2)
