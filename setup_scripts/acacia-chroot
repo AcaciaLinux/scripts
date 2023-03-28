@@ -1,0 +1,48 @@
+#!/bin/sh
+
+if [ $# -lt 1 ]
+then
+    echo "Usage: $0 <mount point>"
+    exit 1
+fi
+
+MNT=$1
+ARGS=${*:2}
+
+if grep -F " /sys/firmware/efi/efivars " /proc/mounts > /dev/null; then
+    EFIVARS=true
+else
+    EFIVARS=false
+fi
+
+if ! [ -d $MNT ]
+then
+    echo "Mountpoint $MNT does not seem to be a directory!"
+    exit 1
+fi
+
+mount -v --bind /dev $MNT/dev
+
+mount -vt proc proc $MNT/proc
+mount -vt sysfs sysfs $MNT/sys
+mount -vt tmpfs tmpfs $MNT/run
+
+if $EFIVARS; then
+    mkdir -pv $MNT/sys/firmware/efi/efivars
+    mount -vt efivarfs efivars $MNT/sys/firmware/efi/efivars
+fi
+
+# Turn off errors from now on, we want to continue even if chroot fails
+set -e
+chroot $MNT $ARGS
+
+if $EFIVARS; then
+    umount -v $MNT/sys/firmware/efi/efivars
+fi
+
+umount -v $MNT/run
+umount -v $MNT/sys
+umount -v $MNT/proc
+
+umount -v $MNT/dev
+
