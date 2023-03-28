@@ -34,7 +34,9 @@ fi
 
 # Turn off errors from now on, we want to continue even if chroot fails
 set -e
+echo "[acacia-chroot] Entering chroot"
 chroot $MNT $ARGS
+echo "[acacia-chroot] Exited chroot"
 
 if $EFIVARS; then
     umount -v $MNT/sys/firmware/efi/efivars
