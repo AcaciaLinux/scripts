@@ -35,6 +35,18 @@ for div in soup.findAll("div", id="pkgdeps"):
                 for entry in li.findAll("a"):
                     makedeps.append(entry.text)
                     
+
+# Remove duplicates
+deps = list(set(deps))
+makedeps = list(set(makedeps))
+
+# remove git, glibc and stuff that is not needed
+if "glibc" in makedeps:
+    makedeps.remove("glibc")
+
+if "git" in makedeps:
+    makedeps.remove("git")
+
 depsString = ""
 makedepsString = ""
 
